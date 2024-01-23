@@ -4,17 +4,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Update Task</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
 </head>
 <body>
-    <h1>Update Task</h1>
+    <div class="container mt-4">
+        <h1>Update Task</h1>
 
-    <form method="post" action="{% url 'update_task' task.id %}">
-        {% csrf_token %}
-        {{ form.as_p }}
+        <form method="post" action="{% url 'update_task' task.id %}" class="form">
+            {% csrf_token %}
+           <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" name="title" id="title" class="form-control" value="{{ task.title }}" required>
+           </div>
+           
+           <div class="form-group">
+                <label for="description">Description</label>
+                <textarea name="description" id="description" class="form-control" required>{{ task.description }}</textarea>
+           </div>
 
-        <button type="submit">Update Task</button>
-    </form>
+           <div class="form-group">
+                <label for="due_date">Deadline</label>
+                <input type="datetime-local" name="due_date" id="due_date" class="form-control" value="{{ task.due_date | date:'Y-m-d\TH:i' }}" required>
+           </div>
 
-    <a href="{% url 'task_list' %}">Cancel</a>
+           <div class="form-check">
+                <input type="checkbox" name="completed" id="completed" class="form-check-input" {% if task.completed %}checked{% endif %}>
+                <label for="completed" class="form-check-label">Completed</label>
+           </div>
+            <button type="submit" class="btn btn-primary">Update Task</button>
+            <a href="{% url 'task_list' %}" class="btn btn-secondary">Cancel</a>
+        </form>
+
+        {% if form.errors %}
+            <div class="alert alert-danger">
+                <strong>Error:</strong> Please fix the errors below.
+                <ul>
+                {% for error in form.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+    </div>
 </body>
 </html>

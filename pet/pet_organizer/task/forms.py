@@ -13,7 +13,7 @@ class TaskForm(forms.ModelForm):
 class UpdateTaskForm(TaskForm):
     class Meta:
         model = Task
-        fields = ['title', 'description', 'due_date', 'completed', 'edited']
+        fields = ['title', 'description', 'due_date', 'completed',]
         widgets = {
             'due_date': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
             'edited': forms.HiddenInput()

@@ -8,8 +8,9 @@ from .forms import TaskForm, UpdateTaskForm
 # Create your views here.
 
 def task_list(request):
-    tasks = Task.objects.all()
-    return render(request, 'task/tasks_list.html', {'tasks': tasks})
+    task_done = Task.objects.filter(completed=True)
+    task_todo = Task.objects.filter(completed=False)
+    return render(request, 'task/task_list.html', {'task_done': task_done, 'task_todo': task_todo})
 
 def create_task(request):
     if request.method == 'POST':
@@ -39,7 +40,7 @@ def update_task(request, task_id):
             form.save()
             return redirect(to='task_list')
         else:
-            messages.error(request, "Invalid data.")
+            messages.error(request, "Invalid data. Please fix the errors below.")
     else:
         form = UpdateTaskForm(instance=task)
     

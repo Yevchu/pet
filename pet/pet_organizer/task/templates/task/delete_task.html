@@ -4,15 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Delete Task</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
 </head>
 <body>
-    <h1>Are you sure you want to delete "{{ task.title }}"?</h1>
+    <div class="container mt-5">
+        <h1>Are you sure you want to delete "{{ task.title }}"?</h1>
 
-    <form method="post" action="{% url 'delete_task' task.id %}">
-        {% csrf_token %}
-        <button type="submit">Yes, delete</button>
-    </form>
-
-    <a href="{% url 'task_list' %}">No, cancel</a>
+        <form method="post" action="{% url 'delete_task' task.id %}">
+            {% csrf_token %}
+            <input type="hidden" name="confirm" value="yes">
+            <button type="submit" class="btn btn-danger">Delete</button>
+            <a href="{% url 'task_list' %}" class="btn btn-secondary">Cancel</a>
+        </form>
+    
+    </div>
 </body>
 </html>
