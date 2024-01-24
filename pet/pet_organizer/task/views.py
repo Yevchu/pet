@@ -1,15 +1,27 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.utils import timezone
+from django.db.models import Q
 
 from .models import Task
-from .forms import TaskForm, UpdateTaskForm
+from .forms import TaskForm, UpdateTaskForm, TaskFilterForm
 
 # Create your views here.
 
 def task_list(request):
-    task_done = Task.objects.filter(completed=True)
-    task_todo = Task.objects.filter(completed=False)
+    search_query = request.GET.get('search_query')
+
+    if search_query:
+        tasks = Task.objects.filter(
+            Q(title__icontains=search_query)|
+            Q(completed=True if search_query.lower() == 'done' else False)
+        )
+    else:
+        tasks = Task.objects.all()
+    
+    task_done = tasks.filter(completed=True)
+    task_todo = tasks.filter(completed=False)
+
     return render(request, 'task/task_list.html', {'task_done': task_done, 'task_todo': task_todo})
 
 def create_task(request):
