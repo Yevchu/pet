@@ -21,10 +21,9 @@ class UpdateTaskForm(TaskForm):
 
 class TaskFilterForm(forms.Form):
     STATUS_CHOICES = [
-        ('', 'any'),
-        ('todo', 'TODO'),
-        ('done', 'DONE')
+        'todo',
+        'done'
     ]
 
-    status = forms.ChoiceField(choices=STATUS_CHOICES, required=False)
-    search_query = forms.CharField(max_length=100, required=False, widget=forms.TextInput(attrs={'placeholder': 'Search by name'}))
+    # status = forms.ChoiceField(choices=STATUS_CHOICES, required=False)
+    search_query = forms.CharField(max_length=100, required=False, widget=forms.TextInput(attrs={'placeholder': 'Search'}))

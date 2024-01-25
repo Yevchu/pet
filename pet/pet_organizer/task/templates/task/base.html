@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task List</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+</head>
+
+<body>
+    <div class="container mt-4">
+        <header class="d-flex justify-content-between mb-2">
+            <h1 class="mb-0"><a href="{% url 'task_list' %}">Task List</a></h1>
+            <div class="col-md-4 row">
+                <form method="get" action="{% url 'task_list' %}" class="row" style="justify-content: flex-end; padding: 15px">
+                        <div class="m-1">
+                            <input type="text" name="search_query" id="search_query" class="form-control" placeholder="Search">
+                        </div>
+                        <div class="m-1">
+                            <select name="status_filter" id="status_filter" class="form-control">
+                                <option value="" {% if not status_filter %}selected{% endif %}>All</option>
+                                <option value="todo" {% if status_filter == 'todo' %}selected{% endif %}>To-Do</option>
+                                <option value="done" {% if status_filter == 'done' %}selected{% endif %}>Done</option>
+                            </select>
+                        </div>
+                        <div class="m-1">
+                            <button class="btn btn-primary w-100">Apply</button>
+                        </div>
+                </form>
+            </div>
+        </header>
+
+        <div class="mt-4 border p-3 rounded">
+            <h2>Create New Task</h2>
+            <form method="post" action="{% url 'create_task' %}" class="row">
+                {% csrf_token %}
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Title</label>
+                        <input type="text" name="title" id="title" class="form-control" placeholder="Title" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="due_date" class="form-label">Deadline</label>
+                        <input type="datetime-local" name="due_date" id="due_date" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <button type="submit" class="btn btn-primary w-100">Create Task</button>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3" style="height: 100%;">
+                        <label for="description" class="form-label">Description</label>
+                        <textarea name="description" id="description" class="form-control" placeholder="Description" required></textarea>
+                    </div>
+                </div>                               
+            </form>
+        </div>
+
+        {% block search_results %}
+        {% endblock %}
+        
+        {% block task_list %}
+        {% endblock %}
+    </div>
+</body>
+</html>
